@@ -1,62 +1,73 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { News, NewsStatus } from './news.model';
-import { stat } from 'fs';
 import { CreateNewsDto } from './dto/create-news.dto';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { UpdateNewsDto } from './dto/update-news.dto';
 
 @Injectable()
 export class NewsService {
-  private news: News[] = [];
-
-  getAllNews(): News[] {
-    return this.news;
+  constructor(@InjectModel('News') private readonly newsModel: Model<News>) {}
+  private news: News[];
+  async getAllNews(): Promise<News[]> {
+    const result = await this.newsModel.find().exec();
+    return result;
   }
 
-  getNewsById(id: string): News {
-    return this.findNews(id)[0];
+  getNewsById(id: string): Promise<News> {
+    return this.findNews(id);
   }
 
-  createNews(createNewsDto: CreateNewsDto): News {
+  async createNews(createNewsDto: CreateNewsDto): Promise<News> {
     const { title, description } = createNewsDto;
-    const n_news: News = {
-      id: Math.random().toString(),
+    const newNews = new this.newsModel({
       title,
       description,
       status: NewsStatus.CREATED,
       date: new Date(),
-    };
-    this.news.push(n_news);
-    return n_news;
+    });
+    const saved = await newNews.save();
+    return saved;
   }
 
-  deleteById(id: string) {
-    const found = this.findNews(id)[0];
-    this.news = this.news.filter(n => n.id !== found.id);
+  async deleteById(newsId: string) {
+    const found = await this.findNews(newsId);
+    const result = await this.newsModel.deleteOne({ _id: found._id }).exec();
   }
 
-  updateNewsStatus(id: string, status: NewsStatus): News {
-    const updated = this.findNews(id)[0];
-    updated.status = status;
+  async updateNewsStatus(id: string, status: NewsStatus): Promise<News> {
+    const found = await this.findNews(id);
+    found.status = status;
+    const updated = await found.save();
     return updated;
   }
 
-  updateNews(
-    id: string,
-    title: string,
-    description: string,
-    status: string,
-  ): News {
-    const [news, index] = this.findNews(id);
-    const updatedNews = { ...news };
-    this.news[index] = { ...news };
-    return updatedNews;
+  async updateNews(updateNewsDto: UpdateNewsDto): Promise<News> {
+    const { id, title, description, status } = updateNewsDto;
+    const updatedNews = await this.findNews(id);
+    if (title){
+      updatedNews.title = title;
+    }
+    if (status){
+      updatedNews.status = status;
+    }
+    if (description){
+      updatedNews.description = description;
+    }
+    const saved = await updatedNews.save();
+    return saved;
   }
 
-  private findNews(id: string): [News, number] {
-    const index = this.news.findIndex(n => n.id === id);
-    const found = this.news[index];
+  private async findNews(id: string): Promise<News> {
+    let found;
+    try {
+      found = await this.newsModel.findById(id);
+    } catch (error) {
+      throw new NotFoundException('Could not find news with id: ' + id);
+    }
     if (!found) {
       throw new NotFoundException('Could not find news with id: ' + id);
     }
-    return [found, index];
+    return found;
   }
 }

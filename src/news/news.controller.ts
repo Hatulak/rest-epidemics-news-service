@@ -8,42 +8,52 @@ import {
   Patch,
   UsePipes,
   ValidationPipe,
+  Put,
 } from '@nestjs/common';
 import { NewsService } from './news.service';
 import { News, NewsStatus } from './news.model';
 import { CreateNewsDto } from './dto/create-news.dto';
 import { NewsStatusValidationPipe } from './pipes/news-status-validation.pipes';
+import { UpdateNewsDto } from './dto/update-news.dto';
 
 @Controller('news')
 export class NewsController {
   constructor(private readonly newsService: NewsService) {}
 
   @Get()
-  getAllNews(): News[] {
-    return this.newsService.getAllNews();
+  async getAllNews(): Promise<News[]> {
+    return await this.newsService.getAllNews();
   }
 
   @Get(':id')
-  getNewsById(@Param('id') id: string): News {
-    return this.newsService.getNewsById(id);
+  async getNewsById(@Param('id') id: string): Promise<News> {
+    return await this.newsService.getNewsById(id);
   }
 
   @Post()
   @UsePipes(ValidationPipe)
-  addNews(@Body() createNewsDto: CreateNewsDto): News {
-    return this.newsService.createNews(createNewsDto);
+  async addNews(@Body() createNewsDto: CreateNewsDto): Promise<News> {
+    const saved = await this.newsService.createNews(createNewsDto);
+    return saved;
+  }
+
+  @Put()
+  @UsePipes(ValidationPipe)
+  async updateNews(@Body() updateNewsDto: UpdateNewsDto): Promise<News> {
+    const saved = await this.newsService.updateNews(updateNewsDto);
+    return saved;
   }
 
   @Delete(':id')
-  deleteNewsById(@Param('id') id: string): void {
-    return this.newsService.deleteById(id);
+  async deleteNewsById(@Param('id') id: string): Promise<void> {
+    await this.newsService.deleteById(id);
   }
 
   @Patch(':id/status')
-  updateNewsStatus(
+  async updateNewsStatus(
     @Param('id') id: string,
-    @Body('status',NewsStatusValidationPipe) status: NewsStatus,
-  ): News {
-    return this.newsService.updateNewsStatus(id, status);
+    @Body('status', NewsStatusValidationPipe) status: NewsStatus,
+  ): Promise<News> {
+    return await this.newsService.updateNewsStatus(id, status);
   }
 }
