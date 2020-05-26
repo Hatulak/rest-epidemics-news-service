@@ -62,14 +62,14 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:3000/news/2",
+					"raw": "localhost:3000/news/5ecbd329a02226378cc3a1f2",
 					"host": [
 						"localhost"
 					],
 					"port": "3000",
 					"path": [
 						"news",
-						"2"
+						"5ecbd329a02226378cc3a1f2"
 					]
 				}
 			},
@@ -100,25 +100,162 @@
 				"method": "PATCH",
 				"header": [],
 				"body": {
-					"mode": "urlencoded",
-					"urlencoded": [
-						{
-							"key": "status",
-							"value": "PUBLISHED",
-							"type": "text"
+					"mode": "raw",
+					"raw": "{\n    \"status\": \"PUBLISHED\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
 						}
-					]
+					}
 				},
 				"url": {
-					"raw": "localhost:3000/news/0.9562090485999066/status",
+					"raw": "localhost:3000/news/5ecbd329a02226378cc3a1f2/status",
 					"host": [
 						"localhost"
 					],
 					"port": "3000",
 					"path": [
 						"news",
-						"0.9562090485999066",
+						"5ecbd329a02226378cc3a1f2",
 						"status"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update news ",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": \"5ecbd329a02226378cc3a1f2\",\n    \"title\": \"nowy tutuł \",\n    \"description\": \"nowy opis \",\n    \"status\": \"PUBLISHED\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/news",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"news"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get all categories",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/categories",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"categories"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add category ",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Korona wirus\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/categories",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"categories"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get category by id ",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/categories/5ecd8385b01b6127c17bcf08",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"categories",
+						"5ecd8385b01b6127c17bcf08"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete category by id ",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/categories/5ecd8385b01b6127c17bcf08",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"categories",
+						"5ecd8385b01b6127c17bcf08"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update category",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": \"5ecd836db01b6127c17bcf05\",\n    \"name\": \"nowa nazwa  \"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/categories/",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"categories",
+						""
 					]
 				}
 			},

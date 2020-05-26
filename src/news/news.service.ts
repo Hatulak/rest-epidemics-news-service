@@ -4,11 +4,12 @@ import { CreateNewsDto } from './dto/create-news.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { UpdateNewsDto } from './dto/update-news.dto';
+import { v4 as uuid } from 'uuid'
 
 @Injectable()
 export class NewsService {
   constructor(@InjectModel('News') private readonly newsModel: Model<News>) {}
-  private news: News[];
+
   async getAllNews(): Promise<News[]> {
     const result = await this.newsModel.find().exec();
     return result;
@@ -23,6 +24,7 @@ export class NewsService {
     const newNews = new this.newsModel({
       title,
       description,
+      nconst: uuid(),
       status: NewsStatus.CREATED,
       date: new Date(),
     });
