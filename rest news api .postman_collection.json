@@ -24,6 +24,25 @@
 			"response": []
 		},
 		{
+			"name": "get news by id ",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/news/5ecbd329a02226378cc3a1f2",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"news",
+						"5ecbd329a02226378cc3a1f2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "add news",
 			"request": {
 				"method": "POST",
@@ -51,25 +70,6 @@
 					"port": "3000",
 					"path": [
 						"news"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "get news by id ",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "localhost:3000/news/5ecbd329a02226378cc3a1f2",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"news",
-						"5ecbd329a02226378cc3a1f2"
 					]
 				}
 			},
@@ -169,6 +169,25 @@
 			"response": []
 		},
 		{
+			"name": "get category by id ",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/categories/5ecd8385b01b6127c17bcf08",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"categories",
+						"5ecd8385b01b6127c17bcf08"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "add category ",
 			"request": {
 				"method": "POST",
@@ -190,25 +209,6 @@
 					"port": "3000",
 					"path": [
 						"categories"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "get category by id ",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "localhost:3000/categories/5ecd8385b01b6127c17bcf08",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"categories",
-						"5ecd8385b01b6127c17bcf08"
 					]
 				}
 			},
@@ -256,6 +256,116 @@
 					"path": [
 						"categories",
 						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get all comments",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/comments",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"comments"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get comment by id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/comments/5ecd8c56640133307aa2bb50",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"comments",
+						"5ecd8c56640133307aa2bb50"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add comment",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"details\": \"Jakiś tam komentarz trollolo\",\n    \"nconst\": \"e2bc15c9-901b-4ccc-94c0-b85e7a0a7807\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/comments",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"comments"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete comment by id ",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/comments/5ecd8c90640133307aa2bb52",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"comments",
+						"5ecd8c90640133307aa2bb52"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update comment ",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"id\":\"5ecd8c8f640133307aa2bb51\",\n    \"details\": \"Jakiś tam komentarz nowy kometnarzzz\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/comments",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"comments"
 					]
 				}
 			},
