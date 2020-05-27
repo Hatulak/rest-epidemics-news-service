@@ -1,13 +1,19 @@
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Comment } from './comment.model';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { UpdateCommentDto } from './dto/update-comment.dto';
+import { News } from 'src/news/news.model';
 @Injectable()
 export class CommentsService {
   constructor(
     @InjectModel('Comments') private readonly commentsModel: Model<Comment>,
+    @InjectModel('News') private readonly newsModel: Model<News>,
   ) {}
   async getAllComments(): Promise<Comment[]> {
     const result = await this.commentsModel.find().exec();
@@ -27,12 +33,17 @@ export class CommentsService {
         nconst,
         date: new Date(),
       });
-    }
-    else if (newsId){
-        //todo add method to get nconst from newsId 
-    }
-    else {
-         throw new BadRequestException('Could not find field with nconst or newsId!');
+    } else if (newsId) {
+      const foundNconst = await this.getConstFromNews(newsId);
+      newComment = new this.commentsModel({
+        details,
+        nconst: foundNconst,
+        date: new Date(),
+      });
+    } else {
+      throw new BadRequestException(
+        'Could not find field with nconst or newsId!',
+      );
     }
 
     const saved = await newComment.save();
@@ -56,7 +67,8 @@ export class CommentsService {
       updatedComment.nconst = nconst;
     }
     if (newsId) {
-      //todo add method to get nconst from newsId
+      const foundNconst = await this.getConstFromNews(newsId);
+      updatedComment.nconst = foundNconst;
     }
     const saved = await updatedComment.save();
     return saved;
@@ -73,5 +85,18 @@ export class CommentsService {
       throw new NotFoundException('Could not find category with id: ' + id);
     }
     return found;
+  }
+
+  private async getConstFromNews(id: string): Promise<string> {
+    let found;
+    try {
+      found = await this.newsModel.findById(id);
+    } catch (error) {
+      throw new NotFoundException('Could not find news with id: ' + id);
+    }
+    if (!found) {
+      throw new NotFoundException('Could not find news with id: ' + id);
+    }
+    return found.nconst;
   }
 }
