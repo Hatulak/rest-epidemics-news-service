@@ -10,4 +10,8 @@ export class UpdateNewsDto {
   @IsOptional()
   @IsIn([NewsStatus.CREATED, NewsStatus.PUBLISHED])
   status: NewsStatus;
+  @IsOptional()
+  cconst: string;
+  @IsOptional()
+  categoryId: string;
 }

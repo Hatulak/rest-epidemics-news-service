@@ -48,19 +48,13 @@
 				"method": "POST",
 				"header": [],
 				"body": {
-					"mode": "urlencoded",
-					"urlencoded": [
-						{
-							"key": "title",
-							"value": "Korona zabija",
-							"type": "text"
-						},
-						{
-							"key": "description",
-							"value": "O kurla to dziala",
-							"type": "text"
+					"mode": "raw",
+					"raw": "{\n    \"title\": \"nowy tutuł \",\n    \"description\": \"nowy opis \",\n    \"status\": \"PUBLISHED\",\n    \"categoryId\":\"5ecd836db01b6127c17bcf05\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
 						}
-					]
+					}
 				},
 				"url": {
 					"raw": "localhost:3000/news",
@@ -130,7 +124,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"id\": \"5ecbd329a02226378cc3a1f2\",\n    \"title\": \"nowy tutuł \",\n    \"description\": \"nowy opis \",\n    \"status\": \"PUBLISHED\"\n}",
+					"raw": "{\n    \"id\": \"5ece2f4785803b211db736af\",\n    \"title\": \"nowy tutuł \",\n    \"description\": \"nowy opis \",\n    \"status\": \"PUBLISHED\",\n    \"cconst\":\"6e7f0463-d22a-437a-95cf-c1e4654eb47a\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
