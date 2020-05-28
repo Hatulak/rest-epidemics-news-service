@@ -9,7 +9,6 @@ import { Model } from 'mongoose';
 import { CreateUserDto } from './dto/create-user.dto';
 import { v4 as uuid } from 'uuid';
 import * as bcrypt from 'bcrypt';
-import { LoginUserDto } from './dto/login-user.dto';
 
 @Injectable()
 export class UsersService {
@@ -45,18 +44,9 @@ export class UsersService {
     return saved;
   }
 
-  private async findOneByUsername(username: string): Promise<User> {
+  async findOneByUsername(username: string): Promise<User> {
     return await this.userModel.findOne({ username });
   }
-  async validateUserPassword(
-    loginUserDto: LoginUserDto,
-  ): Promise<User> {
-    const { username, password } = loginUserDto;
-    const user = await this.findOneByUsername(username);
-    if (user && await bcrypt.hash(password, user.salt) === user.password) {
-      return user;
-    } else {
-      return null;
-    }
-  }
+  
+  
 }
