@@ -12,6 +12,8 @@ import { v4 as uuid } from 'uuid';
 import { Category } from 'src/categories/category.model';
 import { User } from 'src/users/user.model';
 import * as fs from 'fs';
+import { GetNewsFilterDto } from './dto/get-news-filter.dto';
+import * as moment from 'moment';
 
 @Injectable()
 export class NewsService {
@@ -20,6 +22,55 @@ export class NewsService {
     @InjectModel('Categories')
     private readonly categoriesModel: Model<Category>,
   ) {}
+
+  async getAllNewsWithFilters(
+    getNewsFilterDto: GetNewsFilterDto,
+  ): Promise<News[]> {
+    const {
+      status,
+      date,
+      cconst,
+      categoryId,
+      search,
+      author,
+      dateAfter,
+      dateBefore,
+    } = getNewsFilterDto;
+    let news = await this.newsModel.find().exec();
+
+    if (cconst) {
+      news = news.filter(n => n.cconst === cconst);
+    }
+    if (status) {
+      news = news.filter(n => n.status === status);
+    }
+    if (categoryId) {
+      const foundCConst = await this.getCconstCategory(categoryId);
+      news = news.filter(n => n.cconst === foundCConst);
+    }
+    if (author) {
+      news = news.filter(n => n.author === author);
+    }
+    if (search) {
+      news = news.filter(
+        n => n.title.includes(search) || n.description.includes(search),
+      );
+    }
+    if (date) {
+      news = news.filter(n => moment(date).isSame(n.date, 'day'));
+    }
+    if (dateAfter && dateBefore) {
+      news = news.filter(n =>
+        moment(n.date).isBetween(dateAfter, dateBefore, 'day'),
+      );
+    } else if (dateAfter) {
+      news = news.filter(n => moment(n.date).isAfter(dateAfter, 'day'));
+    } else if (dateBefore) {
+      news = news.filter(n => moment(n.date).isBefore(dateBefore, 'day'));
+    }
+
+    return news;
+  }
 
   async getAllNews(): Promise<News[]> {
     const result = await this.newsModel.find().exec();
@@ -111,7 +162,7 @@ export class NewsService {
     return saved;
   }
 
-  async deleteFile(id: string, path: string,res): Promise<News> {
+  async deleteFile(id: string, path: string, res): Promise<News> {
     const news = await this.findNews(id);
     fs.unlink('./uploads/' + path, err => {
       if (err) {

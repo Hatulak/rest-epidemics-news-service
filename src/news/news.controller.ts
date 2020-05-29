@@ -14,6 +14,7 @@ import {
   UploadedFile,
   BadRequestException,
   Res,
+  Query,
 } from '@nestjs/common';
 import { NewsService } from './news.service';
 import { News, NewsStatus } from './news.model';
@@ -26,14 +27,20 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
 import { v1 as uuid } from 'uuid';
+import { GetNewsFilterDto } from './dto/get-news-filter.dto';
 
 @Controller('news')
 export class NewsController {
   constructor(private readonly newsService: NewsService) {}
 
   @Get()
-  async getAllNews(): Promise<News[]> {
-    return await this.newsService.getAllNews();
+  @UsePipes(ValidationPipe)
+  async getAllNews(@Query() getNewsFilterDto: GetNewsFilterDto): Promise<News[]> {
+    if(Object.keys(getNewsFilterDto).length){
+      return await this.newsService.getAllNewsWithFilters(getNewsFilterDto);
+    }else{
+      return await this.newsService.getAllNews();
+    }
   }
 
   @Get(':id')
@@ -90,9 +97,9 @@ export class NewsController {
   async deleteFile(
     @Body('newsId') id: string,
     @Param('path') path: string,
-    @Res() res
+    @Res() res,
   ): Promise<News> {
-    return await this.newsService.deleteFile(id, path,res);
+    return await this.newsService.deleteFile(id, path, res);
   }
 
   @Post('/fileUpload')
