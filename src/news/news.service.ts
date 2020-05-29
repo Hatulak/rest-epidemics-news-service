@@ -10,6 +10,7 @@ import { Model } from 'mongoose';
 import { UpdateNewsDto } from './dto/update-news.dto';
 import { v4 as uuid } from 'uuid';
 import { Category } from 'src/categories/category.model';
+import { User } from 'src/users/user.model';
 
 @Injectable()
 export class NewsService {
@@ -28,7 +29,7 @@ export class NewsService {
     return this.findNews(id);
   }
 
-  async createNews(createNewsDto: CreateNewsDto): Promise<News> {
+  async createNews(createNewsDto: CreateNewsDto, user: User): Promise<News> {
     const { title, description, cconst, categoryId } = createNewsDto;
     let newNews;
     if (cconst) {
@@ -36,6 +37,7 @@ export class NewsService {
         title,
         description,
         nconst: uuid(),
+        author: user.username,
         status: NewsStatus.CREATED,
         date: new Date(),
         cconst,
@@ -46,6 +48,7 @@ export class NewsService {
         title,
         description,
         nconst: uuid(),
+        author: user.username,
         status: NewsStatus.CREATED,
         date: new Date(),
         cconst: foundCConst,

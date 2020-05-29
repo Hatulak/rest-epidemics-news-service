@@ -6,6 +6,8 @@ import {
   UseGuards,
   Req,
   Request,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginUserDto } from 'src/users/dto/login-user.dto';
@@ -19,6 +21,7 @@ export class AuthController {
   constructor(private authService: AuthService) {}
 
   @Post('/signin')
+  @UsePipes(ValidationPipe)
   async signin(@Body() loginUserDto: LoginUserDto): Promise<{ token: string }> {
     const token = await this.authService.validateUserPassword(loginUserDto);
     if (!token) {
@@ -26,10 +29,11 @@ export class AuthController {
     }
     return token;
   }
+
   @Post('/getUser')
   @UseGuards(AuthGuard())
   test(@GetUser() user: User): UserDto {
-    let { id, username, role, uconst } = user;
-    return { id, username, role, uconst };
+    let { id, username, role } = user;
+    return { id, username, role };
   }
 }

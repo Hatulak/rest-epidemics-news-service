@@ -8,11 +8,13 @@ import {
   Body,
   Put,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 import { CommentsService } from './comments.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { UpdateCommentDto } from './dto/update-comment.dto';
 import { Comment } from './comment.model';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('comments')
 export class CommentsController {
@@ -29,6 +31,7 @@ export class CommentsController {
   }
 
   @Post()
+  @UseGuards(AuthGuard('jwt'))
   @UsePipes(ValidationPipe)
   async addComment(
     @Body() createCommentDto: CreateCommentDto,
@@ -38,6 +41,7 @@ export class CommentsController {
   }
 
   @Put()
+  @UseGuards(AuthGuard('jwt'))
   @UsePipes(ValidationPipe)
   async updateComment(
     @Body() updateCommentDto: UpdateCommentDto,
@@ -47,6 +51,7 @@ export class CommentsController {
   }
 
   @Delete(':id')
+  @UseGuards(AuthGuard('jwt'))
   async deleteCommentById(@Param('id') id: string): Promise<void> {
     await this.commentsService.deleteById(id);
   }

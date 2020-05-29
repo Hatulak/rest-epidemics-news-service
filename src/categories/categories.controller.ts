@@ -8,11 +8,13 @@ import {
   Body,
   Put,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 import { CategoriesService } from './categories.service';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { Category } from './category.model';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('categories')
 export class CategoriesController {
@@ -29,6 +31,7 @@ export class CategoriesController {
   }
 
   @Post()
+  @UseGuards(AuthGuard('jwt'))
   @UsePipes(ValidationPipe)
   async addCategory(
     @Body() createCategoryDto: CreateCategoryDto,
@@ -38,6 +41,7 @@ export class CategoriesController {
   }
 
   @Put()
+  @UseGuards(AuthGuard('jwt'))
   @UsePipes(ValidationPipe)
   async updateCategory(
     @Body() updateCategoryDto: UpdateCategoryDto,
@@ -47,6 +51,7 @@ export class CategoriesController {
   }
 
   @Delete(':id')
+  @UseGuards(AuthGuard('jwt'))
   async deleteCategoryById(@Param('id') id: string): Promise<void> {
     await this.cateoriesService.deleteById(id);
   }
