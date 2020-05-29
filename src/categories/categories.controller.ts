@@ -15,6 +15,9 @@ import { UpdateCategoryDto } from './dto/update-category.dto';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { Category } from './category.model';
 import { AuthGuard } from '@nestjs/passport';
+import { Roles } from 'src/auth/roles.decorator';
+import { RolesGuard } from 'src/auth/roles.guard';
+import { UserRole } from 'src/users/user.model';
 
 @Controller('categories')
 export class CategoriesController {
@@ -31,7 +34,8 @@ export class CategoriesController {
   }
 
   @Post()
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Roles(UserRole.ADMIN, UserRole.EDITOR)
   @UsePipes(ValidationPipe)
   async addCategory(
     @Body() createCategoryDto: CreateCategoryDto,
@@ -41,7 +45,8 @@ export class CategoriesController {
   }
 
   @Put()
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Roles(UserRole.ADMIN, UserRole.EDITOR)
   @UsePipes(ValidationPipe)
   async updateCategory(
     @Body() updateCategoryDto: UpdateCategoryDto,
@@ -51,7 +56,8 @@ export class CategoriesController {
   }
 
   @Delete(':id')
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Roles(UserRole.ADMIN, UserRole.EDITOR)
   async deleteCategoryById(@Param('id') id: string): Promise<void> {
     await this.cateoriesService.deleteById(id);
   }

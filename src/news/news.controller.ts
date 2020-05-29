@@ -28,6 +28,9 @@ import { diskStorage } from 'multer';
 import { extname } from 'path';
 import { v1 as uuid } from 'uuid';
 import { GetNewsFilterDto } from './dto/get-news-filter.dto';
+import { RolesGuard } from 'src/auth/roles.guard';
+import { Roles } from 'src/auth/roles.decorator';
+import { UserRole } from 'src/users/user.model';
 
 @Controller('news')
 export class NewsController {
@@ -35,10 +38,12 @@ export class NewsController {
 
   @Get()
   @UsePipes(ValidationPipe)
-  async getAllNews(@Query() getNewsFilterDto: GetNewsFilterDto): Promise<News[]> {
-    if(Object.keys(getNewsFilterDto).length){
+  async getAllNews(
+    @Query() getNewsFilterDto: GetNewsFilterDto,
+  ): Promise<News[]> {
+    if (Object.keys(getNewsFilterDto).length) {
       return await this.newsService.getAllNewsWithFilters(getNewsFilterDto);
-    }else{
+    } else {
       return await this.newsService.getAllNews();
     }
   }
@@ -50,7 +55,8 @@ export class NewsController {
 
   @Post()
   @UsePipes(ValidationPipe)
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Roles(UserRole.ADMIN, UserRole.EDITOR)
   async addNews(
     @GetUser() user,
     @Body() createNewsDto: CreateNewsDto,
@@ -61,20 +67,23 @@ export class NewsController {
 
   @Put()
   @UsePipes(ValidationPipe)
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Roles(UserRole.ADMIN, UserRole.EDITOR)
   async updateNews(@Body() updateNewsDto: UpdateNewsDto): Promise<News> {
     const saved = await this.newsService.updateNews(updateNewsDto);
     return saved;
   }
 
   @Delete(':id')
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Roles(UserRole.ADMIN, UserRole.EDITOR)
   async deleteNewsById(@Param('id') id: string): Promise<void> {
     await this.newsService.deleteById(id);
   }
 
   @Patch(':id/status')
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Roles(UserRole.ADMIN, UserRole.EDITOR)
   async updateNewsStatus(
     @Param('id') id: string,
     @Body('status', NewsStatusValidationPipe) status: NewsStatus,
@@ -93,7 +102,8 @@ export class NewsController {
   }
 
   @Delete('/file/:path')
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Roles(UserRole.ADMIN, UserRole.EDITOR)
   async deleteFile(
     @Body('newsId') id: string,
     @Param('path') path: string,
@@ -103,7 +113,8 @@ export class NewsController {
   }
 
   @Post('/fileUpload')
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Roles(UserRole.ADMIN, UserRole.EDITOR)
   @UseInterceptors(
     FileInterceptor('file', {
       storage: diskStorage({

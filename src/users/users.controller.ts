@@ -10,13 +10,15 @@ import {
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
-import { User } from './user.model';
+import { User, UserRole } from './user.model';
 import { LoginUserDto } from './dto/login-user.dto';
 import { UserDto } from './dto/user-dto.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { GetUser } from 'src/auth/user.decorator';
 import { SetUserRoleDto } from './dto/set-user-role.dto';
 import { DeleteUserDto } from './dto/delete-user.dto';
+import { RolesGuard } from 'src/auth/roles.guard';
+import { Roles } from 'src/auth/roles.decorator';
 
 @Controller('users')
 export class UsersController {
@@ -41,7 +43,8 @@ export class UsersController {
   }
 
   @Post('/setRole')
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Roles(UserRole.ADMIN)
   @UsePipes(ValidationPipe)
   async setRole(@Body() setUserRoleDto: SetUserRoleDto): Promise<UserDto> {
     let { id, username, role } = await this.usersService.setUserRole(

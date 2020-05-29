@@ -18,6 +18,9 @@ import { Comment } from './comment.model';
 import { AuthGuard } from '@nestjs/passport';
 import { GetUser } from 'src/auth/user.decorator';
 import { GetCommentsFilterDto } from './dto/get-comment-filter.dto';
+import { RolesGuard } from 'src/auth/roles.guard';
+import { Roles } from 'src/auth/roles.decorator';
+import { UserRole } from 'src/users/user.model';
 
 @Controller('comments')
 export class CommentsController {
@@ -66,7 +69,8 @@ export class CommentsController {
   }
 
   @Delete(':id')
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Roles(UserRole.ADMIN, UserRole.EDITOR)
   async deleteCommentById(@Param('id') id: string): Promise<void> {
     await this.commentsService.deleteById(id);
   }
