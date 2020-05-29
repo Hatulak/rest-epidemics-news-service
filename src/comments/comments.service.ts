@@ -9,12 +9,64 @@ import { Comment } from './comment.model';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { UpdateCommentDto } from './dto/update-comment.dto';
 import { News } from 'src/news/news.model';
+import { User } from 'src/users/user.model';
+import { GetCommentsFilterDto } from './dto/get-comment-filter.dto';
+import * as moment from 'moment';
 @Injectable()
 export class CommentsService {
   constructor(
     @InjectModel('Comments') private readonly commentsModel: Model<Comment>,
     @InjectModel('News') private readonly newsModel: Model<News>,
   ) {}
+
+  async getAllCommentsWithFilters(
+    getCommentsFilterDto: GetCommentsFilterDto,
+  ): Promise<Comment[]> {
+    const {
+      date,
+      nconst,
+      newsId,
+      search,
+      author,
+      dateAfter,
+      dateBefore,
+    } = getCommentsFilterDto;
+
+    let comments = await this.commentsModel.find().exec();
+  
+    if (nconst) {
+      comments = comments.filter(c => c.nconst === nconst);
+    }
+    if (newsId) {
+      const foundNConst = await this.getConstFromNews(newsId);
+      comments = comments.filter(c => c.nconst === foundNConst);
+    }
+    if (author) {
+      comments = comments.filter(c => c.author === author);
+    }
+    if (search) {
+      comments = comments.filter(
+        c => c.details.includes(search),
+      );
+    }
+    if (date) {
+      comments = comments.filter(c => moment(date).isSame(c.date, 'day'));
+    }
+    if (dateAfter && dateBefore) {
+      comments = comments.filter(c =>
+        moment(c.date).isBetween(dateAfter, dateBefore, 'day'),
+      );
+    } else if (dateAfter) {
+      comments = comments.filter(c => moment(c.date).isAfter(dateAfter, 'day'));
+    } else if (dateBefore) {
+      comments = comments.filter(c =>
+        moment(c.date).isBefore(dateBefore, 'day'),
+      );
+    }
+
+    return comments;
+  }
+
   async getAllComments(): Promise<Comment[]> {
     const result = await this.commentsModel.find().exec();
     return result;
@@ -24,19 +76,24 @@ export class CommentsService {
     return this.findComment(id);
   }
 
-  async createComment(createCommentDto: CreateCommentDto): Promise<Comment> {
+  async createComment(
+    createCommentDto: CreateCommentDto,
+    user: User,
+  ): Promise<Comment> {
     const { details, nconst, newsId } = createCommentDto;
     let newComment;
     if (nconst) {
       newComment = new this.commentsModel({
         details,
         nconst,
+        author: user.username,
         date: new Date(),
       });
     } else if (newsId) {
       const foundNconst = await this.getConstFromNews(newsId);
       newComment = new this.commentsModel({
         details,
+        author: user.username,
         nconst: foundNconst,
         date: new Date(),
       });

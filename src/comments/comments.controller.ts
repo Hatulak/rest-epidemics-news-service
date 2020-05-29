@@ -9,20 +9,31 @@ import {
   Put,
   Delete,
   UseGuards,
+  Query,
 } from '@nestjs/common';
 import { CommentsService } from './comments.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { UpdateCommentDto } from './dto/update-comment.dto';
 import { Comment } from './comment.model';
 import { AuthGuard } from '@nestjs/passport';
+import { GetUser } from 'src/auth/user.decorator';
+import { GetCommentsFilterDto } from './dto/get-comment-filter.dto';
 
 @Controller('comments')
 export class CommentsController {
   constructor(private readonly commentsService: CommentsService) {}
 
   @Get()
-  async getAllComments(): Promise<Comment[]> {
-    return await this.commentsService.getAllComments();
+  async getAllComments(
+    @Query() getCommentsFilterDto: GetCommentsFilterDto,
+  ): Promise<Comment[]> {
+    if (Object.keys(getCommentsFilterDto).length) {
+      return await this.commentsService.getAllCommentsWithFilters(
+        getCommentsFilterDto,
+      );
+    } else {
+      return await this.commentsService.getAllComments();
+    }
   }
 
   @Get(':id')
@@ -35,8 +46,12 @@ export class CommentsController {
   @UsePipes(ValidationPipe)
   async addComment(
     @Body() createCommentDto: CreateCommentDto,
+    @GetUser() user,
   ): Promise<Comment> {
-    const saved = await this.commentsService.createComment(createCommentDto);
+    const saved = await this.commentsService.createComment(
+      createCommentDto,
+      user,
+    );
     return saved;
   }
 
