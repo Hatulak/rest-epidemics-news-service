@@ -9,15 +9,54 @@
 			"name": "get all news",
 			"request": {
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImhhdHVsIiwicm9sZSI6Ik5PUk1BTCIsImlhdCI6MTU5MDc1ODQzOSwiZXhwIjoxNTkwNzYyMDM5fQ.8oP_bKxHprul-mSykivat16xT_Plz9Wi9zH6YMFMgcc",
+						"type": "text",
+						"disabled": true
+					}
+				],
 				"url": {
-					"raw": "localhost:3000/news",
+					"raw": "localhost:3000/news?author=hatul&search=nowy&cconst=f0f34143-c11b-4b37-a47c-8a37838228bf&dateAfter=2020-05-27&dateBefore=2020-05-30",
 					"host": [
 						"localhost"
 					],
 					"port": "3000",
 					"path": [
 						"news"
+					],
+					"query": [
+						{
+							"key": "status",
+							"value": "CREATED",
+							"disabled": true
+						},
+						{
+							"key": "author",
+							"value": "hatul"
+						},
+						{
+							"key": "search",
+							"value": "nowy"
+						},
+						{
+							"key": "cconst",
+							"value": "f0f34143-c11b-4b37-a47c-8a37838228bf"
+						},
+						{
+							"key": "date",
+							"value": "2020-05-29",
+							"disabled": true
+						},
+						{
+							"key": "dateAfter",
+							"value": "2020-05-27"
+						},
+						{
+							"key": "dateBefore",
+							"value": "2020-05-30"
+						}
 					]
 				}
 			},
@@ -46,7 +85,13 @@
 			"name": "add news",
 			"request": {
 				"method": "POST",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImhhdHVsIiwicm9sZSI6Ik5PUk1BTCIsImlhdCI6MTU5MDc1ODQzOSwiZXhwIjoxNTkwNzYyMDM5fQ.8oP_bKxHprul-mSykivat16xT_Plz9Wi9zH6YMFMgcc",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "raw",
 					"raw": "{\n    \"title\": \"nowy tutuł \",\n    \"description\": \"nowy opis \",\n    \"status\": \"PUBLISHED\",\n    \"categoryId\":\"5ecd836db01b6127c17bcf05\"\n}",
@@ -73,16 +118,22 @@
 			"name": "delete news by id",
 			"request": {
 				"method": "DELETE",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImhhdHVsIiwicm9sZSI6Ik5PUk1BTCIsImlhdCI6MTU5MDc1ODQzOSwiZXhwIjoxNTkwNzYyMDM5fQ.8oP_bKxHprul-mSykivat16xT_Plz9Wi9zH6YMFMgcc",
+						"type": "text"
+					}
+				],
 				"url": {
-					"raw": "localhost:3000/news/2",
+					"raw": "localhost:3000/news/5ecbdd8ebd21523f1ffdaf26",
 					"host": [
 						"localhost"
 					],
 					"port": "3000",
 					"path": [
 						"news",
-						"2"
+						"5ecbdd8ebd21523f1ffdaf26"
 					]
 				}
 			},
@@ -92,10 +143,16 @@
 			"name": "update news status",
 			"request": {
 				"method": "PATCH",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImhhdHVsIiwicm9sZSI6Ik5PUk1BTCIsImlhdCI6MTU5MDc1ODQzOSwiZXhwIjoxNTkwNzYyMDM5fQ.8oP_bKxHprul-mSykivat16xT_Plz9Wi9zH6YMFMgcc",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"status\": \"PUBLISHED\"\n}",
+					"raw": "{\n \"status\": \"PUBLISHED\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -103,14 +160,14 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:3000/news/5ecbd329a02226378cc3a1f2/status",
+					"raw": "localhost:3000/news/5ecbdd8ebd21523f1ffdaf26/status",
 					"host": [
 						"localhost"
 					],
 					"port": "3000",
 					"path": [
 						"news",
-						"5ecbd329a02226378cc3a1f2",
+						"5ecbdd8ebd21523f1ffdaf26",
 						"status"
 					]
 				}
@@ -121,7 +178,13 @@
 			"name": "update news ",
 			"request": {
 				"method": "PUT",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImhhdHVsIiwicm9sZSI6Ik5PUk1BTCIsImlhdCI6MTU5MDc1ODQzOSwiZXhwIjoxNTkwNzYyMDM5fQ.8oP_bKxHprul-mSykivat16xT_Plz9Wi9zH6YMFMgcc",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "raw",
 					"raw": "{\n    \"id\": \"5ece2f4785803b211db736af\",\n    \"title\": \"nowy tutuł \",\n    \"description\": \"nowy opis \",\n    \"status\": \"PUBLISHED\",\n    \"cconst\":\"6e7f0463-d22a-437a-95cf-c1e4654eb47a\"\n}",
@@ -185,7 +248,13 @@
 			"name": "add category ",
 			"request": {
 				"method": "POST",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImhhdHVsIiwicm9sZSI6Ik5PUk1BTCIsImlhdCI6MTU5MDc1ODQzOSwiZXhwIjoxNTkwNzYyMDM5fQ.8oP_bKxHprul-mSykivat16xT_Plz9Wi9zH6YMFMgcc",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "raw",
 					"raw": "{\n    \"name\": \"Korona wirus\"\n}",
@@ -212,7 +281,13 @@
 			"name": "delete category by id ",
 			"request": {
 				"method": "DELETE",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImhhdHVsIiwicm9sZSI6Ik5PUk1BTCIsImlhdCI6MTU5MDc1ODQzOSwiZXhwIjoxNTkwNzYyMDM5fQ.8oP_bKxHprul-mSykivat16xT_Plz9Wi9zH6YMFMgcc",
+						"type": "text"
+					}
+				],
 				"url": {
 					"raw": "localhost:3000/categories/5ecd8385b01b6127c17bcf08",
 					"host": [
@@ -231,7 +306,13 @@
 			"name": "update category",
 			"request": {
 				"method": "PUT",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImhhdHVsIiwicm9sZSI6Ik5PUk1BTCIsImlhdCI6MTU5MDc1ODQzOSwiZXhwIjoxNTkwNzYyMDM5fQ.8oP_bKxHprul-mSykivat16xT_Plz9Wi9zH6YMFMgcc",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "raw",
 					"raw": "{\n    \"id\": \"5ecd836db01b6127c17bcf05\",\n    \"name\": \"nowa nazwa  \"\n}",
@@ -261,13 +342,35 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:3000/comments",
+					"raw": "localhost:3000/comments?author=admin&newsId=5ed11176618b47301f510678&nconst=2a6f5a4a-075e-4b70-aa8d-29abe586aec3&search=jas&date=2020-05-29",
 					"host": [
 						"localhost"
 					],
 					"port": "3000",
 					"path": [
 						"comments"
+					],
+					"query": [
+						{
+							"key": "author",
+							"value": "admin"
+						},
+						{
+							"key": "newsId",
+							"value": "5ed11176618b47301f510678"
+						},
+						{
+							"key": "nconst",
+							"value": "2a6f5a4a-075e-4b70-aa8d-29abe586aec3"
+						},
+						{
+							"key": "search",
+							"value": "jas"
+						},
+						{
+							"key": "date",
+							"value": "2020-05-29"
+						}
 					]
 				}
 			},
@@ -296,10 +399,16 @@
 			"name": "add comment",
 			"request": {
 				"method": "POST",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNTkwNzY4NTE2LCJleHAiOjE1OTA3NzIxMTZ9.jmYMU_OaE1Rj2-erxcliZpUA3zaHT37vAf8aadoM9Ec",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"details\": \"Jakiś tam komentarz trollolo\",\n    \"nconst\": \"e2bc15c9-901b-4ccc-94c0-b85e7a0a7807\"\n}",
+					"raw": "{\n    \"details\": \"jasidjasd\",\n    \"newsId\":\"5ed11176618b47301f510678\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -323,7 +432,13 @@
 			"name": "delete comment by id ",
 			"request": {
 				"method": "DELETE",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImhhdHVsIiwicm9sZSI6Ik5PUk1BTCIsImlhdCI6MTU5MDc1ODQzOSwiZXhwIjoxNTkwNzYyMDM5fQ.8oP_bKxHprul-mSykivat16xT_Plz9Wi9zH6YMFMgcc",
+						"type": "text"
+					}
+				],
 				"url": {
 					"raw": "localhost:3000/comments/5ecd8c90640133307aa2bb52",
 					"host": [
@@ -342,10 +457,16 @@
 			"name": "update comment ",
 			"request": {
 				"method": "PUT",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImhhdHVsIiwicm9sZSI6Ik5PUk1BTCIsImlhdCI6MTU5MDc1ODQzOSwiZXhwIjoxNTkwNzYyMDM5fQ.8oP_bKxHprul-mSykivat16xT_Plz9Wi9zH6YMFMgcc",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"id\":\"5ecd8c8f640133307aa2bb51\",\n    \"details\": \"Jakiś tam komentarz nowy kometnarzzz\"\n}",
+					"raw": "{\n\t\"id\":\"5ecd8c8f640133307aa2bb51\",\n    \"details\": \"Jakiś tam komentarz nowy kometnarzzz\",\n    \"newsId\":\"5ece2f4785803b211db736af\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -400,7 +521,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"username\":\"hatul\",\n\t\"password\":\"12345\"\n} ",
+					"raw": "{\n\t\"username\":\"ktos\",\n\t\"password\":\"ktos\"\n} ",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -431,7 +552,7 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImhhdHVsIiwicm9sZSI6Ik5PUk1BTCIsImlhdCI6MTU5MDcwMjEzMiwiZXhwIjoxNTkwNzA1NzMyfQ.sV5_HGJ3rYuE2S8aartjfBYvhgoV8WI3ZU8eTDkNTmw",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imt0b3MiLCJyb2xlIjoiTk9STUFMIiwiaWF0IjoxNTkwNzYwODI1LCJleHAiOjE1OTA3NjQ0MjV9.UuLoely80vB8uKYqehUNJ6ivj7_Zl931Bg9sbPjaxBA",
 						"type": "text"
 					}
 				],
@@ -444,6 +565,181 @@
 					"path": [
 						"auth",
 						"getUser"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "set user role ",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImhhdHVsIiwicm9sZSI6Ik5PUk1BTCIsImlhdCI6MTU5MDc1ODQzOSwiZXhwIjoxNTkwNzYyMDM5fQ.8oP_bKxHprul-mSykivat16xT_Plz9Wi9zH6YMFMgcc",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"username\":\"admin\",\n\t\"role\":\"ADMIN\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/users/setRole",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"users",
+						"setRole"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete user ",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imt0b3MiLCJyb2xlIjoiTk9STUFMIiwiaWF0IjoxNTkwNzYyMjU3LCJleHAiOjE1OTA3NjU4NTd9.Gx_mvZHj_T1NiNlVXnlpkSi4dPCTyD-n0ZGPPLIKd6Y",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"password\":\"ktos\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/users",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "upload file to news",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNTkwNzY4NTE2LCJleHAiOjE1OTA3NzIxMTZ9.jmYMU_OaE1Rj2-erxcliZpUA3zaHT37vAf8aadoM9Ec",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/home/exomat/Pulpit/icon.png"
+						},
+						{
+							"key": "newsId",
+							"value": "5ed11176618b47301f510678",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:3000/news/fileUpload",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"news",
+						"fileUpload"
+					],
+					"query": [
+						{
+							"key": "newsId",
+							"value": "5ece3433a9ffb426ff7ba882",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get file / download",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNTkwNzY4NTE2LCJleHAiOjE1OTA3NzIxMTZ9.jmYMU_OaE1Rj2-erxcliZpUA3zaHT37vAf8aadoM9Ec",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "localhost:3000/news/download/07e98610-a1c7-11ea-9ea3-37332ddbb246.png",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"news",
+						"download",
+						"07e98610-a1c7-11ea-9ea3-37332ddbb246.png"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete file ",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNTkwNzY4NTE2LCJleHAiOjE1OTA3NzIxMTZ9.jmYMU_OaE1Rj2-erxcliZpUA3zaHT37vAf8aadoM9Ec",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"newsId\":\"5ed11176618b47301f510678\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/news/file/07e98610-a1c7-11ea-9ea3-37332ddbb246.png",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"news",
+						"file",
+						"07e98610-a1c7-11ea-9ea3-37332ddbb246.png"
 					]
 				}
 			},
