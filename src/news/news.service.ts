@@ -11,6 +11,7 @@ import { UpdateNewsDto } from './dto/update-news.dto';
 import { v4 as uuid } from 'uuid';
 import { Category } from 'src/categories/category.model';
 import { User } from 'src/users/user.model';
+import * as fs from 'fs';
 
 @Injectable()
 export class NewsService {
@@ -100,6 +101,25 @@ export class NewsService {
       updatedNews.cconst = foundCConst;
     }
     const saved = await updatedNews.save();
+    return saved;
+  }
+
+  async saveFilePath(id: string, file) {
+    const news = await this.findNews(id);
+    news.file = file.filename;
+    const saved = await news.save();
+    return saved;
+  }
+
+  async deleteFile(id: string, path: string,res): Promise<News> {
+    const news = await this.findNews(id);
+    fs.unlink('./uploads/' + path, err => {
+      if (err) {
+        res.status(404).end();
+      }
+    });
+    news.file = '';
+    const saved = await news.save();
     return saved;
   }
 

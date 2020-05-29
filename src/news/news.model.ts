@@ -11,6 +11,7 @@ export const NewsSchema = new mongoose.Schema({
   nconst: { type: String, required: true },
   cconst: { type: String, required: true },
   author: { type: String, required: true },
+  file: { type: String, required: false },
   date: { type: Date, required: true },
   status: { type: NewsStatus, required: true },
 });
@@ -22,6 +23,7 @@ export interface News extends mongoose.Document {
   author: string;
   title: string;
   description: string;
+  file: string;
   date: Date;
   status: NewsStatus;
 }

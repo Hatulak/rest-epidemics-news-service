@@ -10,6 +10,10 @@ import {
   ValidationPipe,
   Put,
   UseGuards,
+  UseInterceptors,
+  UploadedFile,
+  BadRequestException,
+  Res,
 } from '@nestjs/common';
 import { NewsService } from './news.service';
 import { News, NewsStatus } from './news.model';
@@ -18,6 +22,10 @@ import { NewsStatusValidationPipe } from './pipes/news-status-validation.pipes';
 import { UpdateNewsDto } from './dto/update-news.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { GetUser } from 'src/auth/user.decorator';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
+import { extname } from 'path';
+import { v1 as uuid } from 'uuid';
 
 @Controller('news')
 export class NewsController {
@@ -65,5 +73,50 @@ export class NewsController {
     @Body('status', NewsStatusValidationPipe) status: NewsStatus,
   ): Promise<News> {
     return await this.newsService.updateNewsStatus(id, status);
+  }
+
+  @Get('/download/:path')
+  @UseGuards(AuthGuard('jwt'))
+  download(@Res() res, @Param('path') path: string) {
+    res.sendFile(path, { root: 'uploads' }, err => {
+      if (err) {
+        res.status(err.status).end();
+      }
+    });
+  }
+
+  @Delete('/file/:path')
+  @UseGuards(AuthGuard('jwt'))
+  async deleteFile(
+    @Body('newsId') id: string,
+    @Param('path') path: string,
+    @Res() res
+  ): Promise<News> {
+    return await this.newsService.deleteFile(id, path,res);
+  }
+
+  @Post('/fileUpload')
+  @UseGuards(AuthGuard('jwt'))
+  @UseInterceptors(
+    FileInterceptor('file', {
+      storage: diskStorage({
+        destination: './uploads',
+        filename: (req, file, cb) => {
+          return cb(null, `${uuid()}${extname(file.originalname)}`);
+        },
+      }),
+      fileFilter: (req, file, callback) => {
+        if (!file.originalname.match(/.(jpg|jpeg|png|gif)$/)) {
+          return callback(new Error('Only image files are allowed!'), false);
+        }
+        callback(null, true);
+      },
+    }),
+  )
+  async fileUpload(
+    @UploadedFile() file,
+    @Body('newsId') id: string,
+  ): Promise<News> {
+    return await this.newsService.saveFilePath(id, file);
   }
 }
