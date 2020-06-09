@@ -92,7 +92,7 @@ export class NewsController {
   }
 
   @Get('/download/:path')
-  @UseGuards(AuthGuard('jwt'))
+  // @UseGuards(AuthGuard('jwt'))
   download(@Res() res, @Param('path') path: string) {
     res.sendFile(path, { root: 'uploads' }, err => {
       if (err) {
