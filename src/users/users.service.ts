@@ -61,6 +61,16 @@ export class UsersService {
     return saved;
   }
 
+  async getUsers(): Promise<UserDto[]> {
+    const user = await this.userModel.find().exec();
+    const usersDto: UserDto[] = [];
+    user.forEach(p => {
+      usersDto.push({ id: p._id, role: p.role, username: p.username });
+    });
+
+    return usersDto;
+  }
+
   async deleteUser(deleteUserDto: DeleteUserDto, user: User): Promise<void> {
     const { salt, id } = user;
     const hashedPassword = await bcrypt.hash(deleteUserDto.password, salt);
@@ -74,6 +84,21 @@ export class UsersService {
     } else {
       throw new BadRequestException('Password dont match');
     }
+  }
+
+  async deleteUserById(id: string): Promise<void> {
+    const found = await this.findOneById(id);
+    await this.userModel.findByIdAndDelete(found._id).exec();
+  }
+
+  async findOneById(id: string): Promise<User> {
+    let found;
+    try {
+      found = await this.userModel.findById(id);
+    } catch (error) {
+      throw new NotFoundException('Could not find user with id: ' + id);
+    }
+    return found;
   }
 
   async findOneByUsername(username: string): Promise<User> {

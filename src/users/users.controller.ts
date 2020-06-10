@@ -7,6 +7,8 @@ import {
   UsePipes,
   ValidationPipe,
   Delete,
+  Get,
+  Param,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -51,5 +53,20 @@ export class UsersController {
       setUserRoleDto,
     );
     return { id, username, role };
+  }
+
+  @Get('/')
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Roles(UserRole.ADMIN)
+  async getUsers(): Promise<UserDto[]> {
+    const users = await this.usersService.getUsers();
+    return users;
+  }
+
+  @Delete('/deleteUser/:id')
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Roles(UserRole.ADMIN)
+  async deleteUserById(@Param('id') id: string): Promise<void> {
+    await this.usersService.deleteUserById(id);
   }
 }
